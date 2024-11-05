@@ -1,8 +1,3 @@
-<style>
-white { color: white; background: hsl(0 0 0); padding:5px }
-yellow { color: yellow }
-</style>
-
 # Learning TypeScript into ReactJS 18 <br> (A TypeScript journey Part I)
 ## Based on [Learn React Course on Scrimba](https://v2.scrimba.com/learn-react-c0e)[^1] <br> by [Bob Ziroll](https://v2.scrimba.com/@bobziroll:courses)
 
@@ -168,8 +163,7 @@ export interface Note {
 - ` currentNoteId (string)`
 - `createNewNote and updateNote functions.`
 
-*Update your imports and state declarations with these types: ([^1]) *
-([^1]: My footnote.)
+*Update your imports and state declarations with these types:*
 
 ```ts
 export default function App() {
@@ -517,9 +511,9 @@ How could I skip this part to add the event parameter at calling the function on
 Absolutely right—TypeScript can feel like a strict teacher, but it really helps to catch those little details that can easily slip by otherwise. By enforcing types, it encourages you to think through exactly how data flows through your app, which ultimately makes everything more predictable and robust. It’s helping you deepen your understanding!
 </details>
 
-<details><summary>Type Error on switching to firebase[^2]</summary>
+<details><summary>Type Error on switching to firebase </summary>
  
-## firebase issues
+## firebase issues [^2]
 ### One Type Error
  Finally I finished my little App and I switch localStorage to firbade to store the text, everything is working except for two things, one is a type error and the other it's an issue of performance when I add a feature. But first I would like to takle the type error... let's see:
 ```ts
@@ -742,11 +736,11 @@ This solution fix it but shift the error to the inside line:
 // Inside the App component
 
   snapshot.docs.map(doc => ({
-      id: doc.id, // Type error [^2].
+      id: doc.id, // Type error [^te].
       ...(doc.data() as Note)
   }))
 
-//[^2]: Type error:
+//[^te]: Type error:
 'id' is specified more than once, so this usage will be overwritten.ts(2783)
 App.tsx(27, 25): This spread always overwrites this property.
 

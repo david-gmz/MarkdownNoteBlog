@@ -74,13 +74,14 @@ export default function App() {
 
         return () => clearTimeout(timeoutId);
     }, [currentNote, tempNoteText, currentNoteId, currentNote?.body]); // Add optional chaining
+    const themMode = darkMode ? "dark" : ""
     return (
-        <div className={darkMode ? "dark" : "light"}>
+        <>
             <Navbar
                 darkMode={darkMode}
                 toggleDarkMode={handleToggleThemeMode}
             />
-            <main>
+            <main className={themMode}>
                 {notes.length > 0 ? (
                     <Split
                         style={{
@@ -103,7 +104,7 @@ export default function App() {
                         />
                     </Split>
                 ) : (
-                    <div className="no-notes">
+                    <div className={`no-notes ${themMode}`}>
                         <h1>You have no notes</h1>
                         <button
                             className="first-note"
@@ -113,6 +114,6 @@ export default function App() {
                     </div>
                 )}
             </main>
-        </div>
+        </>
     );
 }

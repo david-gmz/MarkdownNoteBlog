@@ -3,9 +3,11 @@ import MDEditor from "@uiw/react-md-editor";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 import rehypeSanitize from "rehype-sanitize";
-import { EditorProps } from "../../models";
+import { useContext } from "react";
+import { NoteContext } from "../../store/note-context";
 
-export default function Editor({ tempNoteText, setTempNoteText, darkMode }: EditorProps) {
+export default function Editor() {
+    const {tempNoteText, setTempNoteText, darkMode} = useContext(NoteContext)
     const handleChange = (text?: string) => {
         if (text !== undefined) setTempNoteText(text);
     };

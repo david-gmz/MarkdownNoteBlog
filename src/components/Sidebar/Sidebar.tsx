@@ -1,14 +1,16 @@
-import { SidebarProps } from "../../models";
+import { useContext } from "react";
 import classes from "./Sidebar.module.css";
+import { NoteContext } from "../../store/note-context";
 
-export default function Sidebar({
-    notes,
-    currentNote,
-    setCurrentNoteId,
-    addNote,
-    deleteNote,
-    darkMode
-}: SidebarProps) {
+export default function Sidebar() {
+    const {
+        notes,
+        currentNote,
+        setCurrentNoteId,
+        addNote,
+        deleteNote,
+        darkMode
+    } = useContext(NoteContext);
     const mode = darkMode ? classes.dark : "";
     const noteElements = notes.map(note => {
         return (
@@ -38,9 +40,7 @@ export default function Sidebar({
         <section className={`pane ${classes["sidebar"]}`}>
             <div className={classes["sidebar__header"]}>
                 <h3
-                    className={`${mode} ${
-                        classes["sidebar__header--heading"]
-                    }`}>
+                    className={`${mode} ${classes["sidebar__header--heading"]}`}>
                     Notes
                 </h3>
                 <button className={classes["new-note"]} onClick={addNote}>

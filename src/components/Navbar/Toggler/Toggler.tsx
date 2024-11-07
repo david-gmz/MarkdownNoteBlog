@@ -1,7 +1,9 @@
-import { ThemeMode } from "../../../models";
+import { useContext } from "react";
 import classes from "./Toggler.module.css"
+import { NoteContext } from "../../../store/note-context";
 
-export default function Toggler({ darkMode, toggleDarkMode }: ThemeMode) {
+export default function Toggler() {
+     const { darkMode, toggleDarkMode } = useContext(NoteContext);
     const schemeMode = darkMode ? classes["dark"] : "";
     return (
         <div className={`${schemeMode} ${classes["toggler"]}`}>

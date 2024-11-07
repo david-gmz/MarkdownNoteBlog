@@ -829,6 +829,33 @@ useEffect(() => {
 **Optional chaining in dependencies:** By using `currentNote?.body`, you prevent the dependency array from crashing if `currentNote` is `undefined`.
 This should prevent the crash while also maintaining the condition you added for updating only when tempNoteText changes relative to `currentNote.body`.
 </details>
+<details><summary>Refactoring using Context API</summary>
+ 
+## Context API
+### Definition of types in one type
+ Refactoring by using the COntext API simplifies the definition of types in on container type
+
+ ```ts
+ interface Note {
+    id: string;
+    body: string;
+    createdAt: Date;
+    updatedAt: Date;
+}
+ type TypeNoteContext = {
+    notes: Note[];
+    currentNote: Note;
+    setCurrentNoteId: (id: string) => void;
+    addNote: () => void;
+    deleteNote: (id: string) => void;
+    darkMode: boolean;
+    toggleDarkMode: () => void
+    tempNoteText: string;
+    setTempNoteText: React.Dispatch<React.SetStateAction<string>>;
+};
+```
+
+</details>
 
 <br>
 

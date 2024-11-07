@@ -30,26 +30,3 @@ button:focus {
     width: 80%;
     height: 100vh;
 }
-
-.no-notes {
-    width: 100%;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: whitesmoke;
-}
-
-.first-note {
-    cursor: pointer;
-    background-color: #4A4E74;
-    border: none;
-    color: white;
-    border-radius: 3px;
-    padding: 1rem;
-}
-.dark.no-notes{
-  background-color: #21222a;
-  color: white;
-}

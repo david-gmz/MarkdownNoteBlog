@@ -10,7 +10,7 @@ So the project started reading and writing in the editor and managing the data i
 
 ---
 
-<details open>
+<details>
 <summary>Starting React Project with only JS</summary>
 
 ```js
@@ -862,7 +862,7 @@ This should prevent the crash while also maintaining the condition you added for
 
 </details>
 
-<details><summary>Failed Attempt to implement useReducer hook</summary>
+<details open><summary>Failed Attempt to implement useReducer hook</summary>
  
 ## useReducer Desition
 ### Summary

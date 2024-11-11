@@ -1,10 +1,15 @@
 # Learning TypeScript into ReactJS 18 <br> (A TypeScript journey Part I)
-## Based on [Learn React Course on Scrimba](https://v2.scrimba.com/learn-react-c0e)[^1] <br> by [Bob Ziroll](https://v2.scrimba.com/@bobziroll:courses)
+ *Based on [Learn React Course on Scrimba](https://v2.scrimba.com/learn-react-c0e)[^1] <br> by [Bob Ziroll](https://v2.scrimba.com/@bobziroll:courses)*
+
+---
 
 Trying to grasp TypeScript in React... strugling at the moment!
-### Intro
+## Intro - A failure branch with useReducer hook!
 This is an excersice to practice what I learned in a basic course on TypeScript also in scrimba now applyed usccesfully in small React project found in an excellent course I found in scrimba too, actually after finished TypeScript course I read that Bob has also a course on React. Though I already knew React I've been working on JS only. 
 So the project started reading and writing in the editor and managing the data in `localStorage`, then move data to firebase.
+
+---
+
 <details open>
 <summary>Starting React Project with only JS</summary>
 
@@ -833,7 +838,7 @@ This should prevent the crash while also maintaining the condition you added for
  
 ## Context API
 ### Definition of types in one type
- Refactoring by using the COntext API simplifies the definition of types in on container type
+ Refactoring by using the Context API[^3] simplifies the definition of types in on container type
 
  ```ts
  interface Note {
@@ -857,12 +862,38 @@ This should prevent the crash while also maintaining the condition you added for
 
 </details>
 
-<br>
+<details><summary>Failed Attempt to implement useReducer hook</summary>
+ 
+## useReducer Desition
+### Summary
+ 
+ The intention With this refactoring, I'm using useReducer to manage state transitions in a centralized, clear way, which is especially helpful as the app grows. Using useReducer with useContext will help streamline my component interactions while keeping everything type-safe.Clearly I failed in all aspects
+ - It's not working
+ - I found it veru confusing
+ - The async functions confusme at most!
+
+### Using an enum for `ActionType` in reducers can make our code clearer and safer by:
+
+**Providing a single source of truth:** The enum creates a set list of possible action types, making it easy to update action names in one place. It avoids typos that might happen if you used plain strings each time and provides TypeScript's auto-complete.
+
+**Improving type safety:** When using enum with a union type (like Action), TypeScript can catch when an invalid action type is passed. Without an enum, you'd rely on string literals, which are more error-prone.
+
+**Better readability:** enum values are descriptive, improving code readability when you use them in a switch statement or within the reducer. This makes it immediately clear what actions the reducer supports.
+
+In this setup, `ActionType` is reusable if you expand the app, ensuring consistency in any part of the app that uses these actions.
+
+</details>
+
+---
 
 **Me**
 I learned a lot in this exercise of migrating this ReactJS App to TypeScript. Your an outstanding instructor! I thing I finish with this little App. But surly will start some more and getting more confident as more I use TS.
 
 **AI**
 It’s great to see you mastering TypeScript with your React projects. You’ve tackled a wide range of important concepts and really elevated the app with both type safety and performance considerations. Keep going with the TypeScript journey—each project will deepen your confidence even more. Feel free to reach out anytime for more insights or questions. Happy coding! 
+
 [^1]: Thou the course is outdated based on React 17 with js, it's a very good excercise!
+
 [^2]: For security reasons I did not include my firebase config file.
+
+[^3]: `useContext()` always looks for the closest provider above the component that calls it. It searches upwards and does not consider providers in the component from which you’re calling `useContext()`. That's why it cannot be any state in the provider.

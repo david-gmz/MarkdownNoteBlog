@@ -1,16 +1,18 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useEffect, useReducer } from "react";
 import { ChildrenType, Note, TypeNoteContext } from "../models";
 import { firestore, notesCollection } from "../lib";
-import { addDoc, deleteDoc, doc, setDoc, onSnapshot } from "firebase/firestore";
+import { addDoc, deleteDoc, doc, onSnapshot, setDoc } from "firebase/firestore";
+import { initialState, notesReducer, ActionType } from "./notesReducer";
 
 const NoteContext = createContext<TypeNoteContext>({
     notes: [],
     currentNote: {
         id: "",
         body: "",
-        createdAt: new Date(),
-        updatedAt: new Date()
+        createdAt: Date.now(),
+        updatedAt: Date.now()
     },
+    currentNoteId: "",
     setCurrentNoteId: () => {},
     addNote: () => {},
     deleteNote: () => {},
@@ -21,44 +23,57 @@ const NoteContext = createContext<TypeNoteContext>({
 });
 
 function NoteContextProvider({ children }: ChildrenType) {
-    const [notes, setNotes] = useState<Note[]>([]);
-    const [currentNoteId, setCurrentNoteId] = useState("");
-    const [tempNoteText, setTempNoteText] = useState("");
-    const [darkMode, setDarkMode] = useState(false);
-    const handleToggleThemeMode = () => setDarkMode(prevMode => !prevMode);
+    const [state, dispatch] = useReducer(notesReducer, initialState);
     const currentNote =
-        notes.find(note => note.id === currentNoteId) || notes[0];
-    const sortedNotes = notes.sort((a, b) => +b.updatedAt - +a.updatedAt);
+        state.notes.find(note => note.id === state.currentNoteId) ||
+        state.notes[0];
+    const sortedNotes = state.notes.sort((a, b) => +b.updatedAt - +a.updatedAt);
+    const setCurrentNoteId = (id: string) => {
+        const newCurrentNoteId =
+            state.notes.find(note => note.id === id) || state.notes[0].id;
+        dispatch({
+            type: ActionType.SET_CURRENT_NOTE_ID,
+            payload: newCurrentNoteId
+        });
+    };
+
+    const setTempNoteText = (text: string) =>
+        dispatch({ type: ActionType.UPDATE_TEMP_TEXT, payload: text });
+
     useEffect(() => {
-        if (currentNote && currentNote.body !== undefined)
-            setTempNoteText(currentNote.body);
-    }, [currentNote]);
-    useEffect(
-        () =>
-            onSnapshot(notesCollection, snapshot =>
-                setNotes(
-                    snapshot.docs.map(doc => ({
-                        ...(doc.data() as Note),
-                        id: doc.id
-                    }))
-                )
-            ),
-        []
-    );
+        const unsubscribe = onSnapshot(notesCollection, snapshot => {
+            dispatch({
+                type: ActionType.SET_NOTES,
+                payload: snapshot.docs.map(doc => ({
+                    ...(doc.data() as Note),
+                    id: doc.id
+                }))
+            });
+        });
+
+        return unsubscribe;
+    }, []);
+
     useEffect(() => {
-        if (!currentNoteId) {
-            setCurrentNoteId(notes[0]?.id);
+        if (!state.currentNoteId) {
+            dispatch({
+                type: ActionType.SET_CURRENT_NOTE_ID,
+                payload: state.notes[0]?.id
+            });
         }
-    }, [currentNoteId, notes]);
+    }, [state.currentNoteId, state.notes]);
+
     const addNote = async () => {
         const newNoteRef = await addDoc(notesCollection, {
             body: "**Type your markdown note's title here**",
             createdAt: Date.now(),
             updatedAt: Date.now()
         });
-        setCurrentNoteId(newNoteRef.id);
+        dispatch({
+            type: ActionType.SET_CURRENT_NOTE_ID,
+            payload: newNoteRef.id
+        });
     };
-
     const deleteNote = async (noteId: string) => {
         const docRef = doc(firestore, "notes", noteId);
         try {
@@ -67,37 +82,54 @@ function NoteContextProvider({ children }: ChildrenType) {
             console.log(`I got an error ${error}`);
         }
     };
+    const handleToggleThemeMode = () =>
+        dispatch({ type: ActionType.TOGGLE_DARK_MODE });
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
-            // Ensure currentNote is defined and has a body
-            if (currentNote && tempNoteText !== currentNote.body) {
+            if (currentNote && state.tempNoteText !== currentNote?.body) {
                 const updateNote = async (text: string) => {
-                    const docRef = doc(firestore, "notes", currentNoteId);
+                    const docRef = doc(firestore, "notes", state.currentNoteId);
                     await setDoc(
                         docRef,
                         { body: text, updatedAt: Date.now() },
                         { merge: true }
                     );
+                    dispatch({
+                        type: ActionType.UPDATE_NOTE,
+                        payload: { body: text, updatedAt: Date.now() }
+                    });
                 };
-                updateNote(tempNoteText);
+                updateNote(state.tempNoteText);
             }
         }, 500);
 
         return () => clearTimeout(timeoutId);
-    }, [currentNote, tempNoteText, currentNoteId, currentNote?.body]); // Add optional chaining
+    }, [currentNote, state.tempNoteText, state.currentNoteId]);
+
+    useEffect(() => {
+        const currentNote = state.notes.find(
+            note => note.id === state.currentNoteId
+        );
+        if (currentNote && currentNote.body !== state.tempNoteText) {
+            dispatch({
+                type: ActionType.UPDATE_TEMP_TEXT,
+                payload: { text: currentNote.body }
+            });
+        }
+    }, [state.currentNoteId, state.notes, state.tempNoteText]);
 
     const ctxNotes = {
+        ...state,
         notes: sortedNotes,
         currentNote,
         setCurrentNoteId,
         addNote,
         deleteNote,
-        darkMode,
         toggleDarkMode: handleToggleThemeMode,
-        tempNoteText,
         setTempNoteText
     };
+
     return (
         <NoteContext.Provider value={ctxNotes}>{children}</NoteContext.Provider>
     );

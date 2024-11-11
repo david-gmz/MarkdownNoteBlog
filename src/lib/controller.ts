@@ -2,7 +2,7 @@ import {
     collection,
     getFirestore,
 } from "firebase/firestore";
-import { app } from "./firebase";
+import { app } from './firebase';
 
 const firestore = getFirestore(app);
 

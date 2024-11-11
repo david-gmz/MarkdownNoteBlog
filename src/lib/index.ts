@@ -1,4 +1,4 @@
-export { app } from "./firebase";
+export { app } from './firebase';
 export {
     firestore,
     notesCollection

@@ -3,21 +3,22 @@ import MDEditor from "@uiw/react-md-editor";
 import "@uiw/react-md-editor/markdown-editor.css";
 import "@uiw/react-markdown-preview/markdown.css";
 import rehypeSanitize from "rehype-sanitize";
-import { useContext } from "react";
-import { NoteContext } from "../../store/note-context";
+import { EditorProps } from "../../models";
 
-export default function Editor() {
-    const {tempNoteText, setTempNoteText, darkMode} = useContext(NoteContext)
-    const handleChange = (text?: string) => {
-        if (text !== undefined) setTempNoteText(text);
-    };
+export default function Editor({ currentNote, updateNote }: EditorProps) {
+    function handleEditorChange(value?: string) {
+    if (value !== undefined) {
+        updateNote(value);
+    }
+}
 
     return (
-        <section className="pane editor" data-color-mode={darkMode ? "dark" : "light"}>
+        <section
+            className="pane editor">
             <MDEditor
                 height="100%"
-                value={tempNoteText}
-                onChange={handleChange}
+                value={currentNote.body}
+                onChange={handleEditorChange}
                 previewOptions={{
                     rehypePlugins: [[rehypeSanitize]]
                 }}

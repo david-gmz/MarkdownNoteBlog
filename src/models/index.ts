@@ -1,26 +1,26 @@
-import { ReactNode } from "react";
-
 interface Note {
     id: string;
     body: string;
-    createdAt: Date;
-    updatedAt: Date;
+}
+interface EditorProps {
+    currentNote: Note;
+    updateNote: (text: string) => void;
 }
 
-type TypeNoteContext = {
+interface SidebarProps {
     notes: Note[];
     currentNote: Note;
     setCurrentNoteId: (id: string) => void;
-    addNote: () => void;
-    deleteNote: (id: string) => void;
-    darkMode: boolean;
-    toggleDarkMode: () => void
-    tempNoteText: string;
-    setTempNoteText: React.Dispatch<React.SetStateAction<string>>;
-};
-
-type ChildrenType = {
-    children: ReactNode;
+    newNote: () => void;
+    deleteNote: (
+        id: string,
+        event: React.MouseEvent<HTMLButtonElement>
+    ) => void;
 }
 
-export type { Note, TypeNoteContext, ChildrenType };
+type NavbarProps = {
+    darkMode: boolean;
+    toggleTheme: () => void;
+};
+
+export type { Note, EditorProps, SidebarProps, NavbarProps };

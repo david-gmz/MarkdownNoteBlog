@@ -1,8 +1,5 @@
 export { app } from "./firebase";
 export {
     firestore,
-    notesCollection,
-    addNote,
-    deleteNote,
-    updateNote
+    notesCollection
 } from "./controller";

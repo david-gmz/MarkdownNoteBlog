@@ -5,7 +5,7 @@ Trying to grasp TypeScript in React... strugling at the moment!
 ### Intro
 This is an excersice to practice what I learned in a basic course on TypeScript also in scrimba now applyed usccesfully in small React project found in an excellent course I found in scrimba too, actually after finished TypeScript course I read that Bob has also a course on React. Though I already knew React I've been working on JS only. 
 So the project started reading and writing in the editor and managing the data in `localStorage`, then move data to firebase.
-<details open>
+<details>
 <summary>Starting React Project with only JS</summary>
 
 ```js
@@ -829,11 +829,11 @@ useEffect(() => {
 **Optional chaining in dependencies:** By using `currentNote?.body`, you prevent the dependency array from crashing if `currentNote` is `undefined`.
 This should prevent the crash while also maintaining the condition you added for updating only when tempNoteText changes relative to `currentNote.body`.
 </details>
-<details><summary>Refactoring using Context API</summary>
+<details open><summary>Refactoring using Context API</summary>
  
 ## Context API
 ### Definition of types in one type
- Refactoring by using the COntext API simplifies the definition of types in on container type
+ Refactoring by using the COntext API[^3] simplifies the definition of types in on container type
 
  ```ts
  interface Note {
@@ -857,12 +857,15 @@ This should prevent the crash while also maintaining the condition you added for
 
 </details>
 
-<br>
+---
 
 **Me**
 I learned a lot in this exercise of migrating this ReactJS App to TypeScript. Your an outstanding instructor! I thing I finish with this little App. But surly will start some more and getting more confident as more I use TS.
 
 **AI**
 It’s great to see you mastering TypeScript with your React projects. You’ve tackled a wide range of important concepts and really elevated the app with both type safety and performance considerations. Keep going with the TypeScript journey—each project will deepen your confidence even more. Feel free to reach out anytime for more insights or questions. Happy coding! 
+
+
 [^1]: Thou the course is outdated based on React 17 with js, it's a very good excercise!
 [^2]: For security reasons I did not include my firebase config file.
+[^3]: `useContext()` always looks for the closest provider above the component that calls it. It searches upwards and does not consider providers in the component from which you’re calling `useContext()`. That's why it cannot be any state in the provider.

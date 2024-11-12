@@ -1,13 +1,18 @@
+import React from "react";
 import { SidebarProps } from "../../models";
-import classes from './Sidebar.module.css'
+import { NoteContext } from "../../store/notesContext";
+import classes from "./Sidebar.module.css";
 
-export default function Sidebar({
-    notes,
-    currentNote,
-    setCurrentNoteId,
-    newNote,
-    deleteNote
-}: SidebarProps) {
+export default function Sidebar() {
+    const {
+        notes,
+        currentNote,
+        setCurrentNoteId,
+        createNewNote,
+        deleteNote,
+        darkMode
+    }: SidebarProps = React.useContext(NoteContext);
+    const mode = darkMode ? classes.dark : "";
     const noteElements = notes.map(note => {
         return (
             <div key={note.id}>
@@ -18,7 +23,7 @@ export default function Sidebar({
                             : ""
                     }`}
                     onClick={() => setCurrentNoteId(note.id)}>
-                    <h4 className={classes["text-snippet"]}>
+                    <h4 className={`${mode} ${classes["text-snippet"]}`}>
                         {note.body.split("\n")[0]}
                     </h4>
                     <button
@@ -36,10 +41,10 @@ export default function Sidebar({
         <section className={`pane ${classes["sidebar"]}`}>
             <div className={classes["sidebar__header"]}>
                 <h3
-                    className={`${classes["sidebar__header--heading"]}`}>
+                    className={`${mode} ${classes["sidebar__header--heading"]}`}>
                     Notes
                 </h3>
-                <button className={classes["new-note"]} onClick={newNote}>
+                <button className={classes["new-note"]} onClick={createNewNote}>
                     +
                 </button>
             </div>

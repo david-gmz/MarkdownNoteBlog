@@ -388,6 +388,17 @@ useEffect(() => {
 Initialize Safely: By using a conditional notesStorage ? JSON.parse(notesStorage) : [], we ensure JSON.parse is only called when notesStorage is a non-null string.
 Type-Safe Initial State: Assign initialNotes as the default value for notes when initializing state. This way, notes starts with an empty array if there’s nothing in localStorage.
 This approach avoids null issues while keeping notes type-safe as Note[].
+
+### Explanation for the `useEffect`
+In this case, using `useEffect` is essential for ensuring that localStorage updates each time notes changes, making it a controlled side effect. Here’s why it's beneficial:
+
+**Keeps State and localStorage in Sync:** By updating localStorage inside `useEffect`, you ensure that every time notes changes, localStorage reflects the latest state. Without `useEffect`, updating localStorage would require adding localStorage.setItem to every part of your code that modifies notes, which can lead to errors or missed updates.
+
+**Avoids Re-renders and Potential Bugs:** Directly calling localStorage.setItem outside `useEffect` in a function body could cause unnecessary re-renders, especially if setNotes is called multiple times within a single render cycle. With `useEffect`, the update to localStorage is isolated to run only after notes has fully updated, which prevents re-render loops.
+
+**Future Maintenance:** It’s a best practice to put code with side effects (like localStorage interactions) into `useEffect`, as it signals intent and keeps your component’s primary logic (like rendering or handling user actions) clean and focused. This structure makes it easier to maintain and refactor later.
+
+So, while it might work without `useEffect`, using it ensures consistent, reliable updates to localStorage and keeps your code easier to understand and maintain.
 </details>
 
 <details><summary>Event Definition Type</summary>
@@ -513,6 +524,14 @@ How could I skip this part to add the event parameter at calling the function on
 
 **AI**
 Absolutely right—TypeScript can feel like a strict teacher, but it really helps to catch those little details that can easily slip by otherwise. By enforcing types, it encourages you to think through exactly how data flows through your app, which ultimately makes everything more predictable and robust. It’s helping you deepen your understanding!
+</details>
+
+<details open><summary>Refactoring with Context API</summary>
+ 
+## createContext & useContext
+### Avoiding Props Drilling
+ One of the best ways to avoid Props drilling is by concentrating all your states properties in one place and the Context Api is one of the best choises for smalls apps like this one but with many properties.
+
 </details>
 
 ---

@@ -5,13 +5,23 @@ interface Note {
 interface EditorProps {
     currentNote: Note;
     updateNote: (text: string) => void;
+    darkMode: boolean;
 }
 
-interface SidebarProps {
+interface NewNoteProps {
+    createNewNote: () => void;
+    darkMode: boolean;
+}
+
+interface ContainerProps {
+    notes: Note[];
+    currentNoteId: string;
+    darkMode: boolean;
+}
+interface SidebarProps extends NewNoteProps {
     notes: Note[];
     currentNote: Note;
     setCurrentNoteId: (id: string) => void;
-    newNote: () => void;
     deleteNote: (
         id: string,
         event: React.MouseEvent<HTMLButtonElement>
@@ -22,5 +32,19 @@ type NavbarProps = {
     darkMode: boolean;
     toggleTheme: () => void;
 };
+type ChildrenProp = { children: React.ReactNode };
+type NotesContextProps = EditorProps &
+    SidebarProps &
+    NavbarProps &
+    ContainerProps;
 
-export type { Note, EditorProps, SidebarProps, NavbarProps };
+export type {
+    Note,
+    EditorProps,
+    NewNoteProps,
+    SidebarProps,
+    NavbarProps,
+    ContainerProps,
+    NotesContextProps,
+    ChildrenProp
+};
